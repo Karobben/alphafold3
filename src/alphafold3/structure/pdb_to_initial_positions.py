@@ -104,11 +104,11 @@ def load_initial_positions_from_pdb(
 
         token_idx += 1
 
-    logging.info(f"Loaded initial positions from {pdb_path}")
+    logging.info('Loaded initial positions from %s', pdb_path)
     return positions
 
   except Exception as e:
-    logging.error(f"Failed to load initial positions from {pdb_path}: {e}")
+    logging.error('Failed to load initial positions from %s: %s', pdb_path, e)
     return None
 
 
