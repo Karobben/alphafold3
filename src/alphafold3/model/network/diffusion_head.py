@@ -299,6 +299,7 @@ def sample(
     batch: feat_batch.Batch,
     key: jnp.ndarray,
     config: SampleConfig,
+    initial_positions: jnp.ndarray | None = None,
 ) -> dict[str, jnp.ndarray]:
   """Sample using denoiser on batch.
 
@@ -308,6 +309,13 @@ def sample(
     key: random key
     config: config for the sampling process (e.g. number of denoising steps,
       etc.)
+    initial_positions: Optional custom initial atom positions. If provided, these
+      coordinates will be used as the starting point for diffusion instead of
+      random noise. Can be either:
+      - Shape (num_tokens, max_atoms_per_token, 3): Will be tiled for all samples
+      - Shape (num_samples, num_tokens, max_atoms_per_token, 3): One per sample
+      Coordinates should be in Ångströms and will be scaled by the initial noise level.
+      If None, uses standard random Gaussian initialization.
 
   Returns:
     a dict
@@ -348,9 +356,21 @@ def sample(
 
   noise_levels = noise_schedule(jnp.linspace(0, 1, config.steps + 1))
 
-  key, noise_key = jax.random.split(key)
-  positions = jax.random.normal(noise_key, (num_samples,) + mask.shape + (3,))
-  positions *= noise_levels[0]
+  if initial_positions is not None:
+    # Use provided initial positions
+    if initial_positions.ndim == 3:
+      # Shape: (num_tokens, max_atoms_per_token, 3) -> tile for num_samples
+      positions = jnp.tile(initial_positions[None, ...], (num_samples, 1, 1, 1))
+    else:
+      # Shape already: (num_samples, num_tokens, max_atoms_per_token, 3)
+      positions = initial_positions
+    positions *= noise_levels[0]
+    positions *= mask[..., None]  # Apply mask
+  else:
+    # Standard random initialization
+    key, noise_key = jax.random.split(key)
+    positions = jax.random.normal(noise_key, (num_samples,) + mask.shape + (3,))
+    positions *= noise_levels[0]
 
   init = (
       jax.random.split(key, num_samples),
