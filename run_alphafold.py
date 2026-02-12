@@ -347,6 +347,12 @@ _NUM_SEEDS = flags.DEFINE_integer(
     ' the input JSON.',
     lower_bound=1,
 )
+_INITIAL_STRUCTURE_PDB = flags.DEFINE_string(
+    'initial_structure_pdb',
+    None,
+    'Optional path to a PDB file to use as initial structure for diffusion. '
+    'If not provided, diffusion starts from random noise.',
+)
 
 # Output controls.
 _SAVE_EMBEDDINGS = flags.DEFINE_bool(
@@ -517,6 +523,7 @@ def predict_structure(
     ref_max_modified_date: datetime.date | None = None,
     conformer_max_iterations: int | None = None,
     resolve_msa_overlaps: bool = True,
+    initial_positions: np.ndarray | None = None,
 ) -> Sequence[ResultsForSeed]:
   """Runs the full inference pipeline to predict structures for each seed."""
 
@@ -536,6 +543,13 @@ def predict_structure(
       f'Featurising data with {len(fold_input.rng_seeds)} seed(s) took'
       f' {time.time() - featurisation_start_time:.2f} seconds.'
   )
+  
+  # Add initial_positions to featurised examples if provided
+  if initial_positions is not None:
+    print('Adding custom initial positions to featurised examples...')
+    for example in featurised_examples:
+      example['initial_positions'] = initial_positions
+  
   print(
       'Running model inference and extracting output structure samples with'
       f' {len(fold_input.rng_seeds)} seed(s)...'
@@ -700,6 +714,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_positions: np.ndarray | None = None,
 ) -> folding_input.Input:
   ...
 
@@ -717,6 +732,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_positions: np.ndarray | None = None,
 ) -> Sequence[ResultsForSeed]:
   ...
 
@@ -733,6 +749,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_positions: np.ndarray | None = None,
 ) -> folding_input.Input | Sequence[ResultsForSeed]:
   """Runs data pipeline and/or inference on a single fold input.
 
@@ -815,6 +832,7 @@ def process_fold_input(
         ref_max_modified_date=ref_max_modified_date,
         conformer_max_iterations=conformer_max_iterations,
         resolve_msa_overlaps=resolve_msa_overlaps,
+        initial_positions=initial_positions,
     )
     print(f'Writing outputs with {len(fold_input.rng_seeds)} seed(s)...')
     write_outputs(
@@ -976,6 +994,26 @@ def main(_):
     if _NUM_SEEDS.value is not None:
       print(f'Expanding fold job {fold_input.name} to {_NUM_SEEDS.value} seeds')
       fold_input = fold_input.with_multiple_seeds(_NUM_SEEDS.value)
+    
+    # Load initial positions from PDB if specified
+    initial_positions = None
+    if _INITIAL_STRUCTURE_PDB.value:
+      from alphafold3.structure import pdb_to_initial_positions
+      
+      target_chains = []
+      target_sequences = []
+      for chain in fold_input.chains:
+        target_chains.append(chain.id)
+        seq = ''.join(s.sequence for s in chain.sequences)
+        target_sequences.append(seq)
+      
+      initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
+          pdb_path=_INITIAL_STRUCTURE_PDB.value,
+          target_chains=target_chains,
+          target_sequences=target_sequences,
+          max_atoms_per_token=128,  # Standard AlphaFold 3 value
+      )
+    
     process_fold_input(
         fold_input=fold_input,
         data_pipeline_config=data_pipeline_config,
@@ -987,6 +1025,7 @@ def main(_):
         resolve_msa_overlaps=_RESOLVE_MSA_OVERLAPS.value,
         force_output_dir=_FORCE_OUTPUT_DIR.value,
         compress_large_output_files=_COMPRESS_LARGE_OUTPUT_FILES.value,
+        initial_positions=initial_positions,
     )
     num_fold_inputs += 1
 
