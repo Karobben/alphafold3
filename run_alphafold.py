@@ -564,15 +564,22 @@ def predict_structure(
         target_sequences.append(sequence)
       
       # Get atom layout from the first featurised example
-      # The atom layout is embedded in the features
       first_example = featurised_examples[0]
       
-      # Create atom layout from batch features
-      # atom_names is stored in ref_space_uid which contains atom layout info
-      if 'ref_space_uid' in first_example:
-        atom_names = first_example['ref_space_uid']
-        num_tokens = atom_names.shape[0]
-        max_atoms = atom_names.shape[1]
+      # Decode atom names from ref_atom_name_chars
+      if 'ref_atom_name_chars' in first_example:
+        atom_name_chars = first_example['ref_atom_name_chars']
+        num_tokens = atom_name_chars.shape[0]
+        max_atoms = atom_name_chars.shape[1]
+        
+        # Decode atom names from chars (chr(char + 32) for each valid char)
+        atom_names = np.empty((num_tokens, max_atoms), dtype=object)
+        for i in range(num_tokens):
+          for j in range(max_atoms):
+            chars = atom_name_chars[i, j]
+            # Decode only non-zero characters
+            name = ''.join(chr(c + 32) for c in chars if c > 0)
+            atom_names[i, j] = name if name else ''
         
         # Create a minimal atom layout for coordinate extraction
         atom_layout_obj = atom_layout.AtomLayout(
@@ -596,7 +603,7 @@ def predict_structure(
         else:
           print('Warning: Failed to load initial positions, using random initialization')
       else:
-        print('Warning: Could not extract atom layout from features, skipping initial positions')
+        print('Warning: Could not find ref_atom_name_chars in features, skipping initial positions')
     except Exception as e:
       print(f'Error loading initial positions from PDB: {e}')
       import traceback
