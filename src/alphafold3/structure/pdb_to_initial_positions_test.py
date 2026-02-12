@@ -5,6 +5,9 @@
 
 """Tests for pdb_to_initial_positions module."""
 
+import os
+import tempfile
+
 from absl.testing import absltest
 from alphafold3.structure import pdb_to_initial_positions
 import numpy as np
@@ -120,7 +123,6 @@ ATOM   4  O  O   . ALA A 1 1 ? 13.0 23.0 33.0 1.0 50.0 ? 1 ALA A O   1
 """
 
     # Write to temporary file
-    import tempfile
     with tempfile.NamedTemporaryFile(mode='w', suffix='.cif', delete=False) as f:
       f.write(mmcif_string)
       temp_path = f.name
@@ -139,7 +141,6 @@ ATOM   4  O  O   . ALA A 1 1 ? 13.0 23.0 33.0 1.0 50.0 ? 1 ALA A O   1
         self.assertEqual(result.shape, expected_shape)
         self.assertEqual(result.dtype, np.float32)
     finally:
-      import os
       os.unlink(temp_path)
 
 

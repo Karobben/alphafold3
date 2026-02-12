@@ -13,8 +13,8 @@ import numpy as np
 
 
 # Thresholds for chain matching
-EXACT_CHAIN_MATCH_THRESHOLD = 0.8  # Threshold for accepting exact chain ID match
-CHAIN_MATCH_MIN_SIMILARITY = 0.7  # Minimum similarity for matching by sequence
+CHAIN_MATCH_EXACT_THRESHOLD = 0.8  # Threshold for accepting exact chain ID match
+CHAIN_MATCH_MIN_THRESHOLD = 0.7  # Minimum similarity for matching by sequence
 
 # Standard AlphaFold 3 value for maximum atoms per token
 MAX_ATOMS_PER_TOKEN = 128
@@ -118,7 +118,7 @@ def _find_matching_chain(
   pdb_chains = list(structure.chains_table.id)
   if target_chain_id in pdb_chains:
     pdb_sequence = _get_chain_sequence(structure, target_chain_id)
-    if _sequence_similarity(target_sequence, pdb_sequence) > EXACT_CHAIN_MATCH_THRESHOLD:
+    if _sequence_similarity(target_sequence, pdb_sequence) > CHAIN_MATCH_EXACT_THRESHOLD:
       return target_chain_id
 
   # Try to find by sequence similarity
@@ -133,7 +133,7 @@ def _find_matching_chain(
       best_similarity = similarity
       best_match = pdb_chain_id
 
-  if best_similarity > CHAIN_MATCH_MIN_SIMILARITY:
+  if best_similarity > CHAIN_MATCH_MIN_THRESHOLD:
     logging.info(
         f"Matched target chain {target_chain_id} to PDB chain {best_match} "
         f"(similarity: {best_similarity:.2f})"
