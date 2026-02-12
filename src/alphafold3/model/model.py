@@ -268,6 +268,9 @@ class Model(hk.Module):
     if key is None:
       key = hk.next_rng_key()
 
+    # Extract initial_positions if present (before converting batch)
+    initial_positions = batch.get('initial_positions', None)
+    
     batch = feat_batch.Batch.from_data_dict(batch)
 
     embedding_module = evoformer_network.Evoformer(
@@ -315,6 +318,7 @@ class Model(hk.Module):
         batch,
         embeddings,
         sample_config=self.config.heads.diffusion.eval,
+        initial_positions=initial_positions,
     )
 
     # Compute dist_error_fn over all samples for distance error logging.
