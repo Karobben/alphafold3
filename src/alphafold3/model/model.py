@@ -311,10 +311,14 @@ class Model(hk.Module):
       num_iter = self.config.num_recycles + 1
       embeddings, _ = hk.fori_loop(0, num_iter, recycle_body, (embeddings, key))
 
+    # Check if initial positions are provided in the batch
+    initial_positions = batch.data.get('initial_positions', None)
+
     samples = self._sample_diffusion(
         batch,
         embeddings,
         sample_config=self.config.heads.diffusion.eval,
+        initial_positions=initial_positions,
     )
 
     # Compute dist_error_fn over all samples for distance error logging.

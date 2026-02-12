@@ -47,6 +47,8 @@ from alphafold3.model import model
 from alphafold3.model import params
 from alphafold3.model import post_processing
 from alphafold3.model.components import utils
+from alphafold3.model.atom_layout import atom_layout
+from alphafold3.structure import pdb_to_initial_positions
 import haiku as hk
 import jax
 from jax import numpy as jnp
@@ -376,6 +378,13 @@ _COMPRESS_LARGE_OUTPUT_FILES = flags.DEFINE_bool(
     ' largest files) using zstandard. Note that embeddings and distogram, if'
     ' saved, are already stored in a compressed format.',
 )
+_INITIAL_STRUCTURE_PDB = flags.DEFINE_string(
+    'initial_structure_pdb',
+    None,
+    'Optional path to a PDB file to use as initial structure for diffusion. '
+    'The chains and residues will be matched to the input sequences. '
+    'If not provided, diffusion starts from random noise.',
+)
 
 
 def make_model_config(
@@ -517,6 +526,7 @@ def predict_structure(
     ref_max_modified_date: datetime.date | None = None,
     conformer_max_iterations: int | None = None,
     resolve_msa_overlaps: bool = True,
+    initial_structure_pdb: str | None = None,
 ) -> Sequence[ResultsForSeed]:
   """Runs the full inference pipeline to predict structures for each seed."""
 
@@ -536,6 +546,62 @@ def predict_structure(
       f'Featurising data with {len(fold_input.rng_seeds)} seed(s) took'
       f' {time.time() - featurisation_start_time:.2f} seconds.'
   )
+  
+  # Load initial positions from PDB if provided
+  initial_positions = None
+  if initial_structure_pdb:
+    print(f'Loading initial structure from {initial_structure_pdb}...')
+    try:
+      # Extract chain IDs and sequences from fold_input
+      target_chains = [chain.id for chain in fold_input.chains]
+      target_sequences = []
+      
+      for chain in fold_input.chains:
+        # Build sequence from chain
+        sequence = ''
+        for entity in chain.sequences:
+          sequence += entity.sequence
+        target_sequences.append(sequence)
+      
+      # Get atom layout from the first featurised example
+      # The atom layout is embedded in the features
+      first_example = featurised_examples[0]
+      
+      # Create atom layout from batch features
+      # atom_names is stored in ref_space_uid which contains atom layout info
+      if 'ref_space_uid' in first_example:
+        atom_names = first_example['ref_space_uid']
+        num_tokens = atom_names.shape[0]
+        max_atoms = atom_names.shape[1]
+        
+        # Create a minimal atom layout for coordinate extraction
+        atom_layout_obj = atom_layout.AtomLayout(
+            atom_name=atom_names,
+            res_id=np.arange(num_tokens).repeat(max_atoms).reshape(num_tokens, max_atoms),
+            chain_id=np.array([['']*max_atoms]*num_tokens, dtype=object),
+        )
+        
+        initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
+            pdb_path=initial_structure_pdb,
+            target_chains=target_chains,
+            target_sequences=target_sequences,
+            atom_layout_obj=atom_layout_obj,
+        )
+        
+        if initial_positions is not None:
+          print(f'Loaded initial positions: shape={initial_positions.shape}')
+          # Add initial positions to all featurised examples
+          for example in featurised_examples:
+            example['initial_positions'] = initial_positions.astype(np.float32)
+        else:
+          print('Warning: Failed to load initial positions, using random initialization')
+      else:
+        print('Warning: Could not extract atom layout from features, skipping initial positions')
+    except Exception as e:
+      print(f'Error loading initial positions from PDB: {e}')
+      import traceback
+      traceback.print_exc()
+  
   print(
       'Running model inference and extracting output structure samples with'
       f' {len(fold_input.rng_seeds)} seed(s)...'
@@ -700,6 +766,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_structure_pdb: str | None = None,
 ) -> folding_input.Input:
   ...
 
@@ -717,6 +784,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_structure_pdb: str | None = None,
 ) -> Sequence[ResultsForSeed]:
   ...
 
@@ -733,6 +801,7 @@ def process_fold_input(
     resolve_msa_overlaps: bool = True,
     force_output_dir: bool = False,
     compress_large_output_files: bool = False,
+    initial_structure_pdb: str | None = None,
 ) -> folding_input.Input | Sequence[ResultsForSeed]:
   """Runs data pipeline and/or inference on a single fold input.
 
@@ -815,6 +884,7 @@ def process_fold_input(
         ref_max_modified_date=ref_max_modified_date,
         conformer_max_iterations=conformer_max_iterations,
         resolve_msa_overlaps=resolve_msa_overlaps,
+        initial_structure_pdb=initial_structure_pdb,
     )
     print(f'Writing outputs with {len(fold_input.rng_seeds)} seed(s)...')
     write_outputs(
@@ -987,6 +1057,7 @@ def main(_):
         resolve_msa_overlaps=_RESOLVE_MSA_OVERLAPS.value,
         force_output_dir=_FORCE_OUTPUT_DIR.value,
         compress_large_output_files=_COMPRESS_LARGE_OUTPUT_FILES.value,
+        initial_structure_pdb=_INITIAL_STRUCTURE_PDB.value,
     )
     num_fold_inputs += 1
 
