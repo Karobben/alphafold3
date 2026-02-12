@@ -38,9 +38,12 @@ def load_initial_positions_from_pdb(
     Ångströms, or None if loading fails.
   """
   try:
-    # Parse PDB file
+    # Parse PDB file (line by line to avoid loading entire file into memory)
+    pdb_lines = []
     with open(pdb_path, 'r') as f:
-      pdb_lines = f.readlines()
+      for line in f:
+        if line.startswith(('ATOM  ', 'HETATM')):
+          pdb_lines.append(line)
     
     # Parse atoms from PDB
     pdb_structure = _parse_pdb_atoms(pdb_lines)
@@ -184,7 +187,7 @@ def _find_matching_chain(
       best_similarity = similarity
       best_match = pdb_chain_id
   
-  if best_similarity > FALLBACK_SIMILARITY_THRESHOLD:  # Threshold for accepting a match
+  if best_similarity > FALLBACK_SIMILARITY_THRESHOLD:
     logging.info(
         f"Matched target chain {target_chain_id} to PDB chain {best_match} "
         f"(similarity: {best_similarity:.2f})"
@@ -226,6 +229,10 @@ def _align_residues(
 ) -> dict[int, tuple[int, str]]:
   """Align target sequence to PDB residues.
 
+  This function performs a simple alignment that assumes sequences match from
+  the start with minor offsets for insertions/deletions. For more complex
+  sequence alignments, consider using dedicated alignment algorithms.
+
   Args:
     target_sequence: Target sequence (1-letter codes).
     pdb_residues: Dictionary of PDB residues keyed by (res_seq, res_name).
@@ -247,8 +254,6 @@ def _align_residues(
       f"PDB length={len(pdb_sequence)}"
   )
   
-  # Simple alignment: assume sequences match from start
-  # For more complex cases, could use sequence alignment algorithms
   mapping = {}
   
   # Handle length differences

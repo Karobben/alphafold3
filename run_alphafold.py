@@ -572,7 +572,7 @@ def predict_structure(
         num_tokens = atom_name_chars.shape[0]
         max_atoms = atom_name_chars.shape[1]
         
-        # Decode atom names from chars (chr(char + 32) for each valid char)
+        # Decode atom names from chars (chr(char + 32) to convert from offset ASCII)
         atom_names = np.empty((num_tokens, max_atoms), dtype=object)
         for i in range(num_tokens):
           for j in range(max_atoms):
@@ -585,7 +585,7 @@ def predict_structure(
         atom_layout_obj = atom_layout.AtomLayout(
             atom_name=atom_names,
             res_id=np.arange(num_tokens).repeat(max_atoms).reshape(num_tokens, max_atoms),
-            chain_id=np.array([['']*max_atoms]*num_tokens, dtype=object),
+            chain_id=np.array([[''] * max_atoms for _ in range(num_tokens)], dtype=object),
         )
         
         initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
