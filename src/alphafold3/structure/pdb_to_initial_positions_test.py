@@ -123,7 +123,9 @@ ATOM   4  O  O   . ALA A 1 1 ? 13.0 23.0 33.0 1.0 50.0 ? 1 ALA A O   1
 """
 
     # Write to temporary file
-    with tempfile.NamedTemporaryFile(mode='w', suffix='.cif', delete=False) as f:
+    with tempfile.NamedTemporaryFile(
+        mode='w', suffix='.cif', delete=False, encoding='utf-8'
+    ) as f:
       f.write(mmcif_string)
       temp_path = f.name
 

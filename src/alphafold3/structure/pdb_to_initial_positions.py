@@ -12,9 +12,13 @@ from alphafold3.structure import parsing
 import numpy as np
 
 
-# Thresholds for chain matching
-CHAIN_MATCH_EXACT_THRESHOLD = 0.8  # Threshold for accepting exact chain ID match
-CHAIN_MATCH_MIN_THRESHOLD = 0.7  # Minimum similarity for matching by sequence
+# Thresholds for chain matching by sequence similarity.
+# CHAIN_MATCH_EXACT_THRESHOLD: When an exact chain ID match is found, require
+#   this minimum sequence similarity to accept the match (default: 0.8 or 80%).
+# CHAIN_MATCH_MIN_THRESHOLD: When searching all chains by sequence similarity,
+#   require this minimum similarity to accept a match (default: 0.7 or 70%).
+CHAIN_MATCH_EXACT_THRESHOLD = 0.8
+CHAIN_MATCH_MIN_THRESHOLD = 0.7
 
 # Standard AlphaFold 3 value for maximum atoms per token
 MAX_ATOMS_PER_TOKEN = 128
@@ -40,7 +44,7 @@ def load_initial_positions_from_pdb(
   """
   try:
     # Parse PDB file using existing AlphaFold 3 structure parsing
-    with open(pdb_path, 'r') as f:
+    with open(pdb_path, 'r', encoding='utf-8') as f:
       pdb_string = f.read()
 
     # Parse as mmCIF format (PDB files are also supported)

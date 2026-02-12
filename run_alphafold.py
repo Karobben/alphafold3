@@ -47,6 +47,7 @@ from alphafold3.model import model
 from alphafold3.model import params
 from alphafold3.model import post_processing
 from alphafold3.model.components import utils
+from alphafold3.structure import pdb_to_initial_positions
 import haiku as hk
 import jax
 from jax import numpy as jnp
@@ -998,8 +999,6 @@ def main(_):
     # Load initial positions from PDB if specified
     initial_positions = None
     if _INITIAL_STRUCTURE_PDB.value:
-      from alphafold3.structure import pdb_to_initial_positions
-
       target_chains = []
       target_sequences = []
       for chain in fold_input.chains:
