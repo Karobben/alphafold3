@@ -59,15 +59,15 @@ def load_initial_positions_from_pdb(
 
     # Process each target chain
     for target_chain_id, target_sequence in zip(target_chains, target_sequences):
-      logging.info(f"Processing chain {target_chain_id} with {len(target_sequence)} residues")
+      logging.info('Processing chain %s with %d residues', target_chain_id, len(target_sequence))
 
       # Find matching chain in PDB structure
       pdb_chain = _find_matching_chain(structure, target_chain_id, target_sequence)
 
       if pdb_chain is None:
         logging.warning(
-            f"Could not find matching chain for {target_chain_id} in PDB. "
-            f"Using zeros for this chain."
+            'Could not find matching chain for %s in PDB. Using zeros for this chain.',
+            target_chain_id,
         )
         token_idx += len(target_sequence)
         continue
@@ -139,8 +139,10 @@ def _find_matching_chain(
 
   if best_similarity > CHAIN_MATCH_MIN_THRESHOLD:
     logging.info(
-        f"Matched target chain {target_chain_id} to PDB chain {best_match} "
-        f"(similarity: {best_similarity:.2f})"
+        'Matched target chain %s to PDB chain %s (similarity: %.2f)',
+        target_chain_id,
+        best_match,
+        best_similarity,
     )
     return best_match
 
@@ -182,8 +184,10 @@ def _align_residues(
     pdb_sequence += one_letter
 
   logging.info(
-      f"Chain {chain_id}: Target length={len(target_sequence)}, "
-      f"PDB length={len(pdb_sequence)}"
+      'Chain %s: Target length=%d, PDB length=%d',
+      chain_id,
+      len(target_sequence),
+      len(pdb_sequence),
   )
 
   mapping = {}
@@ -194,6 +198,12 @@ def _align_residues(
       mapping[i] = i
 
   match_rate = len(mapping) / len(target_sequence) if target_sequence else 0
-  logging.info(f"Chain {chain_id}: Matched {len(mapping)}/{len(target_sequence)} residues ({match_rate:.1%})")
+  logging.info(
+      'Chain %s: Matched %d/%d residues (%.1f%%)',
+      chain_id,
+      len(mapping),
+      len(target_sequence),
+      match_rate * 100,
+  )
 
   return mapping
