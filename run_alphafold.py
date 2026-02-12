@@ -1011,7 +1011,7 @@ def main(_):
           pdb_path=_INITIAL_STRUCTURE_PDB.value,
           target_chains=target_chains,
           target_sequences=target_sequences,
-          max_atoms_per_token=128,  # Standard AlphaFold 3 value
+          max_atoms_per_token=pdb_to_initial_positions.MAX_ATOMS_PER_TOKEN,
       )
 
     process_fold_input(
