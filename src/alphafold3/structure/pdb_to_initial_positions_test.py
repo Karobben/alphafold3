@@ -19,21 +19,21 @@ class PdbToInitialPositionsTest(absltest.TestCase):
     self.assertEqual(
         pdb_to_initial_positions._sequence_similarity('ACGT', 'ACGT'), 1.0
     )
-    
+
     # Completely different sequences
     self.assertEqual(
         pdb_to_initial_positions._sequence_similarity('AAAA', 'TTTT'), 0.0
     )
-    
+
     # Partially matching sequences
     self.assertEqual(
         pdb_to_initial_positions._sequence_similarity('ACGT', 'ACTT'), 0.75
     )
-    
+
     # Different lengths
     similarity = pdb_to_initial_positions._sequence_similarity('ACG', 'ACGT')
     self.assertAlmostEqual(similarity, 0.75)
-    
+
     # Empty sequences
     self.assertEqual(
         pdb_to_initial_positions._sequence_similarity('', 'ACGT'), 0.0
@@ -51,7 +51,7 @@ class PdbToInitialPositionsTest(absltest.TestCase):
         {'res_name': 'GLY'},
         {'res_name': 'THR'},
     ]
-    
+
     # Perfect match
     target_sequence = 'ACGT'
     mapping = pdb_to_initial_positions._align_residues(
@@ -59,7 +59,7 @@ class PdbToInitialPositionsTest(absltest.TestCase):
     )
     expected = {0: 0, 1: 1, 2: 2, 3: 3}
     self.assertEqual(mapping, expected)
-    
+
     # Partial match
     target_sequence = 'ACXT'
     mapping = pdb_to_initial_positions._align_residues(
@@ -67,7 +67,7 @@ class PdbToInitialPositionsTest(absltest.TestCase):
     )
     expected = {0: 0, 1: 1, 3: 3}  # Position 2 doesn't match
     self.assertEqual(mapping, expected)
-    
+
     # Length mismatch
     target_sequence = 'AC'
     mapping = pdb_to_initial_positions._align_residues(
@@ -118,13 +118,13 @@ ATOM   2  C  CA  . ALA A 1 1 ? 11.0 21.0 31.0 1.0 50.0 ? 1 ALA A CA  1
 ATOM   3  C  C   . ALA A 1 1 ? 12.0 22.0 32.0 1.0 50.0 ? 1 ALA A C   1
 ATOM   4  O  O   . ALA A 1 1 ? 13.0 23.0 33.0 1.0 50.0 ? 1 ALA A O   1
 """
-    
+
     # Write to temporary file
     import tempfile
     with tempfile.NamedTemporaryFile(mode='w', suffix='.cif', delete=False) as f:
       f.write(mmcif_string)
       temp_path = f.name
-    
+
     try:
       result = pdb_to_initial_positions.load_initial_positions_from_pdb(
           pdb_path=temp_path,
@@ -132,7 +132,7 @@ ATOM   4  O  O   . ALA A 1 1 ? 13.0 23.0 33.0 1.0 50.0 ? 1 ALA A O   1
           target_sequences=['A'],  # One residue
           max_atoms_per_token=128,
       )
-      
+
       # Should return an array with correct shape
       if result is not None:
         expected_shape = (1, 128, 3)  # 1 token, 128 atoms, 3 coordinates

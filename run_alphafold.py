@@ -543,13 +543,13 @@ def predict_structure(
       f'Featurising data with {len(fold_input.rng_seeds)} seed(s) took'
       f' {time.time() - featurisation_start_time:.2f} seconds.'
   )
-  
+
   # Add initial_positions to featurised examples if provided
   if initial_positions is not None:
     print('Adding custom initial positions to featurised examples...')
     for example in featurised_examples:
       example['initial_positions'] = initial_positions
-  
+
   print(
       'Running model inference and extracting output structure samples with'
       f' {len(fold_input.rng_seeds)} seed(s)...'
@@ -994,26 +994,26 @@ def main(_):
     if _NUM_SEEDS.value is not None:
       print(f'Expanding fold job {fold_input.name} to {_NUM_SEEDS.value} seeds')
       fold_input = fold_input.with_multiple_seeds(_NUM_SEEDS.value)
-    
+
     # Load initial positions from PDB if specified
     initial_positions = None
     if _INITIAL_STRUCTURE_PDB.value:
       from alphafold3.structure import pdb_to_initial_positions
-      
+
       target_chains = []
       target_sequences = []
       for chain in fold_input.chains:
         target_chains.append(chain.id)
         seq = ''.join(s.sequence for s in chain.sequences)
         target_sequences.append(seq)
-      
+
       initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
           pdb_path=_INITIAL_STRUCTURE_PDB.value,
           target_chains=target_chains,
           target_sequences=target_sequences,
           max_atoms_per_token=128,  # Standard AlphaFold 3 value
       )
-    
+
     process_fold_input(
         fold_input=fold_input,
         data_pipeline_config=data_pipeline_config,

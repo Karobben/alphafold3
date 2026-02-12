@@ -313,7 +313,7 @@ class Model(hk.Module):
 
     # Extract initial_positions from batch if present (for custom initial coordinates)
     initial_positions = batch.get('initial_positions', None)
-    
+
     samples = self._sample_diffusion(
         batch,
         embeddings,
