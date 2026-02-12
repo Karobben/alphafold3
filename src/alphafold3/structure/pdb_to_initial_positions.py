@@ -14,6 +14,11 @@ from alphafold3.model.atom_layout import atom_layout
 import numpy as np
 
 
+# Similarity thresholds for chain matching
+EXACT_MATCH_SIMILARITY_THRESHOLD = 0.8
+FALLBACK_SIMILARITY_THRESHOLD = 0.7
+
+
 def load_initial_positions_from_pdb(
     pdb_path: str,
     target_chains: list[str],
@@ -21,13 +26,13 @@ def load_initial_positions_from_pdb(
     atom_layout_obj: atom_layout.AtomLayout,
 ) -> np.ndarray | None:
   """Load initial atom positions from a PDB file with chain and residue matching.
-  
+
   Args:
     pdb_path: Path to the PDB file.
     target_chains: List of chain IDs from the input (e.g., ['A', 'B']).
     target_sequences: List of sequences corresponding to target_chains.
     atom_layout_obj: The atom layout defining expected atoms per token.
-    
+
   Returns:
     Array of shape (num_tokens, max_atoms_per_token, 3) with coordinates in
     Ångströms, or None if loading fails.
@@ -106,10 +111,10 @@ def load_initial_positions_from_pdb(
 
 def _parse_pdb_atoms(pdb_lines: list[str]) -> dict[str, dict[tuple[int, str], dict[str, np.ndarray]]]:
   """Parse PDB ATOM/HETATM records into a structured format.
-  
+
   Args:
     pdb_lines: Lines from a PDB file.
-    
+
   Returns:
     Dictionary mapping:
       chain_id -> (res_seq, res_name) -> atom_name -> coordinates (x, y, z)
@@ -151,12 +156,12 @@ def _find_matching_chain(
     target_sequence: str,
 ) -> str | None:
   """Find the chain in PDB that best matches the target chain.
-  
+
   Args:
     pdb_structure: Parsed PDB structure.
     target_chain_id: Target chain ID from input.
     target_sequence: Target sequence.
-    
+
   Returns:
     PDB chain ID that matches, or None if no good match.
   """
@@ -164,7 +169,7 @@ def _find_matching_chain(
   if target_chain_id in pdb_structure:
     # Verify sequence similarity
     pdb_sequence = _get_chain_sequence(pdb_structure[target_chain_id])
-    if _sequence_similarity(target_sequence, pdb_sequence) > 0.8:
+    if _sequence_similarity(target_sequence, pdb_sequence) > EXACT_MATCH_SIMILARITY_THRESHOLD:
       return target_chain_id
   
   # Try to find by sequence similarity
@@ -179,7 +184,7 @@ def _find_matching_chain(
       best_similarity = similarity
       best_match = pdb_chain_id
   
-  if best_similarity > 0.7:  # Threshold for accepting a match
+  if best_similarity > FALLBACK_SIMILARITY_THRESHOLD:  # Threshold for accepting a match
     logging.info(
         f"Matched target chain {target_chain_id} to PDB chain {best_match} "
         f"(similarity: {best_similarity:.2f})"
@@ -220,12 +225,12 @@ def _align_residues(
     chain_id: str,
 ) -> dict[int, tuple[int, str]]:
   """Align target sequence to PDB residues.
-  
+
   Args:
     target_sequence: Target sequence (1-letter codes).
     pdb_residues: Dictionary of PDB residues keyed by (res_seq, res_name).
     chain_id: Chain ID for logging.
-    
+
   Returns:
     Dict mapping target sequence position -> PDB residue key.
   """

@@ -546,7 +546,7 @@ def predict_structure(
       f'Featurising data with {len(fold_input.rng_seeds)} seed(s) took'
       f' {time.time() - featurisation_start_time:.2f} seconds.'
   )
-  
+
   # Load initial positions from PDB if provided
   initial_positions = None
   if initial_structure_pdb:
@@ -608,7 +608,7 @@ def predict_structure(
       print(f'Error loading initial positions from PDB: {e}')
       import traceback
       traceback.print_exc()
-  
+
   print(
       'Running model inference and extracting output structure samples with'
       f' {len(fold_input.rng_seeds)} seed(s)...'
