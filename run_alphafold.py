@@ -58,6 +58,9 @@ _HOME_DIR = pathlib.Path(os.environ.get('HOME'))
 _DEFAULT_MODEL_DIR = _HOME_DIR / 'models'
 _DEFAULT_DB_DIR = _HOME_DIR / 'public_databases'
 
+# Standard AlphaFold 3 value for maximum atoms per token/residue
+_MAX_ATOMS_PER_TOKEN = 128
+
 
 # Input and output paths.
 _JSON_PATH = flags.DEFINE_string(
@@ -1002,19 +1005,16 @@ def main(_):
     target_sequences = []
     for chain in first_fold_input.chains:
       target_chains.append(chain.id)
-      # Get sequence - all chain types have a sequence property
-      if hasattr(chain, 'sequence'):
-        seq = chain.sequence
-      else:
-        # For ligands or other types without sequence, use empty string
-        seq = ''
+      # Get sequence - protein, RNA, and DNA chains have a sequence property
+      # Ligands will have an empty or single-character sequence
+      seq = getattr(chain, 'sequence', '')
       target_sequences.append(seq)
     
     initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
         pdb_path=_INITIAL_STRUCTURE_PDB.value,
         target_chains=target_chains,
         target_sequences=target_sequences,
-        max_atoms_per_token=128,  # Standard AlphaFold 3 value
+        max_atoms_per_token=_MAX_ATOMS_PER_TOKEN,
     )
 
   num_fold_inputs = 0
