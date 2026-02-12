@@ -1002,12 +1002,12 @@ def main(_):
     target_sequences = []
     for chain in first_fold_input.chains:
       target_chains.append(chain.id)
-      # Concatenate sequences from all sequence objects in the chain
-      seq = ''
-      if hasattr(chain, 'sequences'):
-        seq = ''.join(s.sequence for s in chain.sequences)
-      elif hasattr(chain, 'sequence'):
+      # Get sequence - all chain types have a sequence property
+      if hasattr(chain, 'sequence'):
         seq = chain.sequence
+      else:
+        # For ligands or other types without sequence, use empty string
+        seq = ''
       target_sequences.append(seq)
     
     initial_positions = pdb_to_initial_positions.load_initial_positions_from_pdb(
