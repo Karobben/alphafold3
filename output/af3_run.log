@@ -1,0 +1,222 @@
+I0212 15:32:24.246194 125706167334720 xla_bridge.py:895] Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+I0212 15:32:24.247200 125706167334720 xla_bridge.py:895] Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+
+Running AlphaFold 3. Please note that standard AlphaFold 3 model parameters are
+only available under terms of use provided at
+https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md.
+If you do not agree to these terms and are using AlphaFold 3 derived model
+parameters, cancel execution of AlphaFold 3 inference with CTRL-C, and do not
+use the model parameters.
+
+Traceback (most recent call last):
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 830, in <module>
+    app.run(main)
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/absl/app.py", line 308, in run
+    _run_main(main, args)
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/absl/app.py", line 254, in _run_main
+    sys.exit(main(argv))
+             ^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 764, in main
+    small_bfd_database_path=expand_path(_SMALL_BFD_DATABASE_PATH.value),
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 757, in <lambda>
+    expand_path = lambda x: replace_db_dir(x, DB_DIR.value)
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 545, in replace_db_dir
+    raise FileNotFoundError(
+FileNotFoundError: ${DB_DIR}/bfd-first_non_consensus_sequences.fasta with ${DB_DIR} not found in any of ['/home/wenkanl2/BioTools/af3Diftest//alphafold3/public_databases'].
+I0212 15:32:58.870476 129593604499264 xla_bridge.py:895] Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+I0212 15:32:58.871263 129593604499264 xla_bridge.py:895] Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+
+Running AlphaFold 3. Please note that standard AlphaFold 3 model parameters are
+only available under terms of use provided at
+https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md.
+If you do not agree to these terms and are using AlphaFold 3 derived model
+parameters, cancel execution of AlphaFold 3 inference with CTRL-C, and do not
+use the model parameters.
+
+Found local devices: [CudaDevice(id=0), CudaDevice(id=1), CudaDevice(id=2), CudaDevice(id=3)], using device 0: cuda:0
+Building model from scratch...
+Checking that model parameters can be loaded...
+Traceback (most recent call last):
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 830, in <module>
+    app.run(main)
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/absl/app.py", line 308, in run
+    _run_main(main, args)
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/absl/app.py", line 254, in _run_main
+    sys.exit(main(argv))
+             ^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 804, in main
+    _ = model_runner.model_params
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/functools.py", line 1001, in __get__
+    val = self.func(instance)
+          ^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/bin/run_alphafold.py", line 321, in model_params
+    return params.get_model_haiku_params(model_dir=self._model_dir)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/alphafold3/model/params.py", line 204, in get_model_haiku_params
+    model_files, is_compressed = select_model_files(model_dir)
+                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/alphafold3/model/params.py", line 178, in select_model_files
+    files = [file for file in model_dir.iterdir() if file.is_file()]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/site-packages/alphafold3/model/params.py", line 178, in <listcomp>
+    files = [file for file in model_dir.iterdir() if file.is_file()]
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/wenkanl2/miniconda3/envs/Alphafold3/lib/python3.11/pathlib.py", line 931, in iterdir
+    for name in os.listdir(self):
+                ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/home/wenkanl2/BioTools/af3Diftest/alphafold3/models'
+I0212 15:33:55.509374 137042610472768 xla_bridge.py:895] Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+I0212 15:33:55.510290 137042610472768 xla_bridge.py:895] Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+I0212 15:33:59.769098 137042610472768 pipeline.py:82] Getting protein MSAs for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:33:59.770956 137009557386944 jackhmmer.py:78] Query sequence: GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:33:59.771674 137009548994240 jackhmmer.py:78] Query sequence: GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:33:59.772253 137009557386944 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpnew7ns4u/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpnew7ns4u/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniref90_2022_05.fa"
+I0212 15:33:59.772819 137009540601536 jackhmmer.py:78] Query sequence: GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:33:59.773020 136989603911360 jackhmmer.py:78] Query sequence: GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:33:59.773223 137009548994240 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmp6c28_g6z/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmp6c28_g6z/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/mgy_clusters_2022_05.fa"
+I0212 15:33:59.773522 137009540601536 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmp91xppypd/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmp91xppypd/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/bfd-first_non_consensus_sequences.fasta"
+I0212 15:33:59.773850 136989603911360 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpntxiq4_k/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpntxiq4_k/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniprot_all_2021_04.fa"
+I0212 15:35:11.455314 137009540601536 subprocess_utils.py:97] Finished Jackhmmer (bfd-first_non_consensus_sequences.fasta) in 71.682 seconds
+I0212 15:39:07.292372 137009557386944 subprocess_utils.py:97] Finished Jackhmmer (uniref90_2022_05.fa) in 307.520 seconds
+I0212 15:41:56.512818 136989603911360 subprocess_utils.py:97] Finished Jackhmmer (uniprot_all_2021_04.fa) in 476.739 seconds
+I0212 15:43:08.981165 137009548994240 subprocess_utils.py:97] Finished Jackhmmer (mgy_clusters_2022_05.fa) in 549.208 seconds
+I0212 15:43:08.986469 137042610472768 pipeline.py:115] Getting protein MSAs took 549.22 seconds for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:43:08.986609 137042610472768 pipeline.py:121] Deduplicating MSAs for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:43:08.991526 137042610472768 pipeline.py:134] Deduplicating MSAs took 0.00 seconds for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER, found 1580 unpaired sequences, 3288 paired sequences
+I0212 15:43:08.992075 137042610472768 pipeline.py:40] Getting protein templates for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:43:08.999796 137042610472768 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmbuild --informat stockholm --hand --amino /tmp/tmps3mwc37f/output.hmm /tmp/tmps3mwc37f/query.msa"
+I0212 15:43:09.081866 137042610472768 subprocess_utils.py:97] Finished Hmmbuild in 0.082 seconds
+I0212 15:43:09.083255 137042610472768 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmsearch --noali --cpu 8 --F1 0.1 --F2 0.1 --F3 0.1 -E 100 --incE 100 --domE 100 --incdomE 100 -A /tmp/tmpej6g6iup/output.sto /tmp/tmpej6g6iup/query.hmm /home/wenkanl2/BioTools/alphafold3/public_databases/pdb_seqres_2022_09_28.fasta"
+I0212 15:43:11.876630 137042610472768 subprocess_utils.py:97] Finished Hmmsearch (pdb_seqres_2022_09_28.fasta) in 2.793 seconds
+I0212 15:43:12.128948 137042610472768 pipeline.py:52] Getting 4 protein templates took 3.14 seconds for sequence GMRESYANENQFGFKTINSDIHKIVIVGGYGKLGGLFARYLRASGYPISILDREDWAVAESILANADVVIVSVPINLTLETIER
+I0212 15:43:18.735614 137042610472768 pipeline.py:166] processing 2PV7, random_seed=1
+I0212 15:43:18.749756 137042610472768 pipeline.py:259] Calculating bucket size for input with 168 tokens.
+I0212 15:43:18.750026 137042610472768 pipeline.py:265] Got bucket size 256 for input with 168 tokens, resulting in 88 padded tokens.
+
+Running AlphaFold 3. Please note that standard AlphaFold 3 model parameters are
+only available under terms of use provided at
+https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md.
+If you do not agree to these terms and are using AlphaFold 3 derived model
+parameters, cancel execution of AlphaFold 3 inference with CTRL-C, and do not
+use the model parameters.
+
+Found local devices: [CudaDevice(id=0), CudaDevice(id=1), CudaDevice(id=2), CudaDevice(id=3)], using device 0: cuda:0
+Building model from scratch...
+Checking that model parameters can be loaded...
+
+Running fold job 2PV7...
+Output will be written in /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/2pv7
+Running data pipeline...
+Running data pipeline for chain A...
+Running data pipeline for chain A took 552.43 seconds
+Running data pipeline for chain B...
+Running data pipeline for chain B took 0.06 seconds
+Writing model input JSON to /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/2pv7/2pv7_data.json
+Predicting 3D structure for 2PV7 with 1 seed(s)...
+Featurising data with 1 seed(s)...
+Featurising data with seed 1.
+Featurising data with seed 1 took 2.00 seconds.
+Featurising data with 1 seed(s) took 8.46 seconds.
+Running model inference and extracting output structure samples with 1 seed(s)...
+Running model inference with seed 1...
+Running model inference with seed 1 took 69.06 seconds.
+Extracting inference results with seed 1...
+Extracting 5 inference samples with seed 1 took 0.23 seconds.
+Running model inference and extracting output structures with 1 seed(s) took 69.29 seconds.
+Writing outputs with 1 seed(s)...
+Fold job 2PV7 done, output written to /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/2pv7
+
+Done running 1 fold jobs.
+I0212 17:09:13.127223 130699232978752 xla_bridge.py:895] Unable to initialize backend 'rocm': module 'jaxlib.xla_extension' has no attribute 'GpuAllocatorConfig'
+I0212 17:09:13.158743 130699232978752 xla_bridge.py:895] Unable to initialize backend 'tpu': INTERNAL: Failed to open libtpu.so: libtpu.so: cannot open shared object file: No such file or directory
+I0212 17:09:19.554822 130699232978752 pipeline.py:82] Getting protein MSAs for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:09:19.574512 130666888931008 jackhmmer.py:78] Query sequence: GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:09:19.575208 130666880538304 jackhmmer.py:78] Query sequence: GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:09:19.575663 130666394023616 jackhmmer.py:78] Query sequence: GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:09:19.576066 130666888931008 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmp097w1kej/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmp097w1kej/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniref90_2022_05.fa"
+I0212 17:09:19.576613 130666880538304 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpvtnkvzay/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpvtnkvzay/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/mgy_clusters_2022_05.fa"
+I0212 17:09:19.576956 130666385630912 jackhmmer.py:78] Query sequence: GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:09:19.577131 130666394023616 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpqm7jvwdw/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpqm7jvwdw/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/bfd-first_non_consensus_sequences.fasta"
+I0212 17:09:19.577516 130666385630912 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmp8mmuefgj/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmp8mmuefgj/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniprot_all_2021_04.fa"
+I0212 17:10:55.998837 130666394023616 subprocess_utils.py:97] Finished Jackhmmer (bfd-first_non_consensus_sequences.fasta) in 96.421 seconds
+I0212 17:14:24.178797 130666888931008 subprocess_utils.py:97] Finished Jackhmmer (uniref90_2022_05.fa) in 304.603 seconds
+I0212 17:17:55.987899 130666385630912 subprocess_utils.py:97] Finished Jackhmmer (uniprot_all_2021_04.fa) in 516.410 seconds
+I0212 17:18:19.575297 130666880538304 subprocess_utils.py:97] Finished Jackhmmer (mgy_clusters_2022_05.fa) in 539.999 seconds
+I0212 17:18:19.576450 130699232978752 pipeline.py:115] Getting protein MSAs took 540.02 seconds for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:18:19.576645 130699232978752 pipeline.py:121] Deduplicating MSAs for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:18:19.584043 130699232978752 pipeline.py:134] Deduplicating MSAs took 0.01 seconds for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP, found 1841 unpaired sequences, 50000 paired sequences
+I0212 17:18:19.584879 130699232978752 pipeline.py:40] Getting protein templates for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:18:19.604084 130699232978752 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmbuild --informat stockholm --hand --amino /tmp/tmptt85u2m6/output.hmm /tmp/tmptt85u2m6/query.msa"
+I0212 17:18:19.845718 130699232978752 subprocess_utils.py:97] Finished Hmmbuild in 0.241 seconds
+I0212 17:18:19.847615 130699232978752 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmsearch --noali --cpu 8 --F1 0.1 --F2 0.1 --F3 0.1 -E 100 --incE 100 --domE 100 --incdomE 100 -A /tmp/tmpkwamt8_v/output.sto /tmp/tmpkwamt8_v/query.hmm /home/wenkanl2/BioTools/alphafold3/public_databases/pdb_seqres_2022_09_28.fasta"
+I0212 17:18:25.373348 130699232978752 subprocess_utils.py:97] Finished Hmmsearch (pdb_seqres_2022_09_28.fasta) in 5.526 seconds
+I0212 17:18:26.437986 130699232978752 pipeline.py:52] Getting 4 protein templates took 6.85 seconds for sequence GIAPLQLGNCSVAGWILGNPECELLISRESWSYIVEKPNPENGTCYPGHFADYEELREQLSSVSSFERFEIFPKESSWPNHTTTGVSASCSHNGESSFYKNLLWLTGKNGLYPNLSKSYANNKEKEVLVLWGVHHPPNIGDQRALYHKEAYVSVVSSHYSRKFTPEIAKRPKVRDQEGRINYYWTLLEPGDTIIFEANGNLIAPRYAFALSRGFGSGIINSNAPMDECDAKCQTPQGAINSSLPFQNVHPVTIGECP
+I0212 17:18:26.631226 130699232978752 pipeline.py:82] Getting protein MSAs for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:18:26.632023 130666880538304 jackhmmer.py:78] Query sequence: ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:18:26.632808 130666385630912 jackhmmer.py:78] Query sequence: ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:18:26.633839 130666888931008 jackhmmer.py:78] Query sequence: ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:18:26.633938 130666385630912 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmp248hyaoc/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmp248hyaoc/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/mgy_clusters_2022_05.fa"
+I0212 17:18:26.634012 130666880538304 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpzq0znp0v/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpzq0znp0v/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniref90_2022_05.fa"
+I0212 17:18:26.635180 130666394023616 jackhmmer.py:78] Query sequence: ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:18:26.635276 130666888931008 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpp1lg3ey4/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpp1lg3ey4/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/bfd-first_non_consensus_sequences.fasta"
+I0212 17:18:26.635645 130666394023616 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//jackhmmer -o /dev/null -A /tmp/tmpp6ahu3gr/output.sto --noali --F1 0.0005 --F2 5e-05 --F3 5e-07 --cpu 8 -N 1 -E 0.0001 --incE 0.0001 /tmp/tmpp6ahu3gr/query.fasta /home/wenkanl2/BioTools/alphafold3/public_databases/uniprot_all_2021_04.fa"
+I0212 17:19:32.262259 130666888931008 subprocess_utils.py:97] Finished Jackhmmer (bfd-first_non_consensus_sequences.fasta) in 65.627 seconds
+I0212 17:22:50.359022 130666880538304 subprocess_utils.py:97] Finished Jackhmmer (uniref90_2022_05.fa) in 263.725 seconds
+I0212 17:25:16.651625 130666394023616 subprocess_utils.py:97] Finished Jackhmmer (uniprot_all_2021_04.fa) in 410.016 seconds
+I0212 17:26:21.823167 130666385630912 subprocess_utils.py:97] Finished Jackhmmer (mgy_clusters_2022_05.fa) in 475.189 seconds
+I0212 17:26:21.828026 130699232978752 pipeline.py:115] Getting protein MSAs took 475.20 seconds for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:26:21.828150 130699232978752 pipeline.py:121] Deduplicating MSAs for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:26:21.851893 130699232978752 pipeline.py:134] Deduplicating MSAs took 0.02 seconds for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS, found 10693 unpaired sequences, 26341 paired sequences
+I0212 17:26:21.861665 130699232978752 pipeline.py:40] Getting protein templates for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:26:22.012491 130699232978752 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmbuild --informat stockholm --hand --amino /tmp/tmpftk8i4v_/output.hmm /tmp/tmpftk8i4v_/query.msa"
+I0212 17:26:22.307361 130699232978752 subprocess_utils.py:97] Finished Hmmbuild in 0.295 seconds
+I0212 17:26:22.309711 130699232978752 subprocess_utils.py:68] Launching subprocess "/home/wenkanl2/miniconda3/envs/Alphafold3/bin//hmmsearch --noali --cpu 8 --F1 0.1 --F2 0.1 --F3 0.1 -E 100 --incE 100 --domE 100 --incdomE 100 -A /tmp/tmp79tm_qax/output.sto /tmp/tmp79tm_qax/query.hmm /home/wenkanl2/BioTools/alphafold3/public_databases/pdb_seqres_2022_09_28.fasta"
+I0212 17:26:27.887287 130699232978752 subprocess_utils.py:97] Finished Hmmsearch (pdb_seqres_2022_09_28.fasta) in 5.577 seconds
+I0212 17:26:28.555649 130699232978752 pipeline.py:52] Getting 4 protein templates took 6.69 seconds for sequence ETLDESGGGLVSPGGSLTLVCKGSGFTFSSYNMNWVRQAPGKGLEWVAQINGDGSTTWYASAVKRRFTISRNNGQSTLTLQMNSLKAEDTATYYCARGAAGSDIDLWGHGTEVTVSS
+I0212 17:26:34.597220 130699232978752 pipeline.py:166] processing test, random_seed=1
+I0212 17:26:34.619319 130699232978752 pipeline.py:259] Calculating bucket size for input with 374 tokens.
+I0212 17:26:34.619455 130699232978752 pipeline.py:265] Got bucket size 512 for input with 374 tokens, resulting in 138 padded tokens.
+
+Running AlphaFold 3. Please note that standard AlphaFold 3 model parameters are
+only available under terms of use provided at
+https://github.com/google-deepmind/alphafold3/blob/main/WEIGHTS_TERMS_OF_USE.md.
+If you do not agree to these terms and are using AlphaFold 3 derived model
+parameters, cancel execution of AlphaFold 3 inference with CTRL-C, and do not
+use the model parameters.
+
+Found local devices: [CudaDevice(id=0), CudaDevice(id=1), CudaDevice(id=2), CudaDevice(id=3)], using device 0: cuda:0
+Building model from scratch...
+Checking that model parameters can be loaded...
+
+Running fold job test...
+Output will be written in /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/test
+Running data pipeline...
+Running data pipeline for chain A...
+Running data pipeline for chain A took 547.08 seconds
+Running data pipeline for chain H...
+Running data pipeline for chain H took 482.03 seconds
+Writing model input JSON to /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/test/test_data.json
+Predicting 3D structure for test with 1 seed(s)...
+Featurising data with 1 seed(s)...
+Featurising data with seed 1.
+Featurising data with seed 1 took 8.99 seconds.
+Featurising data with 1 seed(s) took 14.69 seconds.
+Running model inference and extracting output structure samples with 1 seed(s)...
+Running model inference with seed 1...
+Running model inference with seed 1 took 115.12 seconds.
+Extracting inference results with seed 1...
+Extracting 5 inference samples with seed 1 took 0.68 seconds.
+Running model inference and extracting output structures with 1 seed(s) took 115.79 seconds.
+Writing outputs with 1 seed(s)...
+Fold job test done, output written to /home/wenkanl2/BioTools/af3Diftest/alphafold3/output/test
+
+Done running 1 fold jobs.
+FATAL Flags parsing error: Unknown command line flag 'initial_structure_pdb'
+Pass --helpshort or --helpfull to see help on flags.
+FATAL Flags parsing error: Unknown command line flag 'initial_structure_pdb'
+Pass --helpshort or --helpfull to see help on flags.
+FATAL Flags parsing error: Unknown command line flag 'initial_structure_pdb'
+Pass --helpshort or --helpfull to see help on flags.
